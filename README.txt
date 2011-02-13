@@ -1,6 +1,7 @@
 Network Keylogger v1.0.0.2 - Sends every key pressed in a computer to another computer, via TCP/IP.
 Network Keylogger Server v1.0.0.2 - Server program for Network Keylogger
 Copyright © 2010 VittGam - Net-Keylogger@VittGam.net
+You can contact me directly at https://www.vittgam.net/contact
 
 ================================
 ============ Usage: ============
