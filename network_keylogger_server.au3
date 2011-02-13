@@ -1,6 +1,6 @@
 #cs
 	Network Keylogger Server v1.0.0.2
-	Copyright © 2010 VittGam
+	Copyright Â© 2010 VittGam
 	http://www.Net-Keylogger.VittGam.net/
 	Net-Keylogger@VittGam.net
 
@@ -33,7 +33,7 @@
 #AutoIt3Wrapper_Res_Comment=Network Keylogger Server v1.0.0.2 by VittGam
 #AutoIt3Wrapper_Res_Description=Network Keylogger Server
 #AutoIt3Wrapper_Res_Fileversion=1.0.0.2
-#AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2010 VittGam
+#AutoIt3Wrapper_Res_LegalCopyright=Copyright Â© 2010 VittGam
 #AutoIt3Wrapper_Res_Field=InternalName|network_keylogger_server
 #AutoIt3Wrapper_Res_Field=ProductName|Network Keylogger Server
 #AutoIt3Wrapper_Res_Field=CompanyName|VittGam (www.VittGam.net)
@@ -56,7 +56,7 @@ Global $prname="Network Keylogger Server"
 Global $version="1.0.0.2"
 Global $author="VittGam"
 Global $title=$prname&" v"&$version&" by "&$author
-Global $abouttext=$prname&" v"&$version&@LF&"Copyright © 2010 "&$author&@LF&"http://www.Net-Keylogger.VittGam.net/"&@LF&"Net-Keylogger@VittGam.net"& _
+Global $abouttext=$prname&" v"&$version&@LF&"Copyright Â© 2010 "&$author&@LF&"http://www.Net-Keylogger.VittGam.net/"&@LF&"Net-Keylogger@VittGam.net"& _
 				@LF&@LF&"License information:"&@LF&@LF&"This program is free software: you can redistribute it and/or modify it under "& _
 				"the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) "& _
 				"any later version."&@LF&@LF&"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied "& _
