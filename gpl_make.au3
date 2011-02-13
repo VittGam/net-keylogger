@@ -1,6 +1,6 @@
 #cs
 	GPL_Make.au3 v1.0.0.0 - Convert the GPL to AutoIt3 include file
-	Copyright © 2010 VittGam - NetworkKeylogger@VittGam.net
+	Copyright Â© 2010 VittGam - NetworkKeylogger@VittGam.net
 
 	License information:
 
