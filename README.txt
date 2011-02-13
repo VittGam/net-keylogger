@@ -26,7 +26,7 @@ Copyright © 2010 VittGam - Net-Keylogger@VittGam.net
 	#AutoIt3Wrapper_Res_Comment=Network Keylogger v1.0.0.2 by VittGam
 	#AutoIt3Wrapper_Res_Description=Network Keylogger
 	#AutoIt3Wrapper_Res_Fileversion=1.0.0.2
-	#AutoIt3Wrapper_Res_LegalCopyright=Copyright � 2010 VittGam
+	#AutoIt3Wrapper_Res_LegalCopyright=Copyright © 2010 VittGam
 	#AutoIt3Wrapper_Res_Field=InternalName|network_keylogger
 	#AutoIt3Wrapper_Res_Field=ProductName|Network Keylogger
 	#AutoIt3Wrapper_Res_Field=CompanyName|VittGam (www.VittGam.net)
