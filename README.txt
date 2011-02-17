@@ -3,6 +3,8 @@ Network Keylogger Server v1.0.0.2 - Server program for Network Keylogger
 Copyright © 2010 VittGam - Net-Keylogger@VittGam.net
 You can contact me directly at https://www.vittgam.net/contact
 
+You can donate at https://www.vittgam.net/donate
+
 ================================
 ============ Usage: ============
 ================================
