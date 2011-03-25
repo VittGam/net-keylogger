@@ -21,7 +21,7 @@
 #ce
 
 ; Tested with AutoIt 3.3.6.0
-;~ #NoTrayIcon
+#NoTrayIcon
 #include <WinAPI.au3>
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
 #AutoIt3Wrapper_icon=vittgam.ico
