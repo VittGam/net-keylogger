@@ -11,10 +11,10 @@ You can donate at https://www.vittgam.net/donate
 
 1.	Download Network Keylogger files from https://github.com/VittGam/net-keylogger/zipball/master
 
-2.	Download AutoIt v3.3.6.0 or newer and SciTE AutoIt Script Editor from
+2.	Download AutoIt v3.3.6.0 or newer from
 	http://www.autoitscript.com/autoit3/downloads.shtml
 
-3.	Install AutoIt and SciTE.
+3.	Install AutoIt.
 
 4.	Open the script network_keylogger.au3 with SciTE (right-click -> Edit Script)
 
@@ -51,7 +51,7 @@ You can donate at https://www.vittgam.net/donate
 11.	If you want to access the server from the Internet, open the port on your router if needed.
 	Remember to open it in your firewall too, even for LAN/local connections.
 
-12.	Compile both scripts using the "Compile with Options" right-click command.
+12.	Compile both scripts using the file located at http://www.autoitscript.com/autoit3/scite/download/AutoIt3Wrapper.exe
 
 ================================
 === Known bugs/limitations: ====
